@@ -20,7 +20,7 @@ export default function MovingText({ animationThreshold, text, style }: MovingTe
   const translateX = useSharedValue(0);
   const shouldAnimate = text.length >= animationThreshold;
   const textWidth = text.length * 3;
-  console.log('textWidth', textWidth);
+
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: translateX.value }],

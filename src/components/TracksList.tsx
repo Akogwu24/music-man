@@ -7,7 +7,7 @@ import FastImage from 'react-native-fast-image';
 import { unknownTrackImageUri } from '@/constants/images';
 
 export type TracksListProps = Partial<FlatListProps<Track>> & {
-  id: string;
+  id?: string;
   tracks: Track[];
   hideQueueControls?: boolean;
 };
