@@ -6,7 +6,6 @@ import { useCallback } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import TrackPlayer from 'react-native-track-player';
-import { ThemeProvider, createTheme } from '@rneui/themed';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 SplashScreen.preventAutoHideAsync();
@@ -25,11 +24,9 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <ThemeProvider>
-          <RootNavigation />
+        <RootNavigation />
 
-          <StatusBar style='auto' />
-        </ThemeProvider>
+        <StatusBar style='auto' />
       </GestureHandlerRootView>
     </SafeAreaProvider>
   );
