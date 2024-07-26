@@ -1,7 +1,8 @@
-import { Artist, TrackWithPlaylist } from '@/helpers/types';
+import { Artist, Playlist, TrackWithPlaylist } from '@/helpers/types';
 import { Track } from 'react-native-track-player';
 import { create } from 'zustand';
 import library from '../../assets/data/library.json';
+import { unknownArtistImageUri } from '@/constants/images';
 
 interface LibraryState {
   tracks: TrackWithPlaylist[];
@@ -11,8 +12,25 @@ interface LibraryState {
 
 export const useLibraryStore = create<LibraryState>()((set) => ({
   tracks: library,
-  toggleTrackFavorite: () => {},
-  addToPlaylist: () => {},
+  toggleTrackFavorite: (track) =>
+    set((state) => ({
+      tracks: state.tracks.map((currentTrack) => {
+        if (currentTrack.url === track.url) {
+          return { ...currentTrack, rating: currentTrack.rating === 1 ? 0 : 1 };
+        }
+        return currentTrack;
+      }),
+    })),
+
+  addToPlaylist: (track, playlistName) =>
+    set((state) => ({
+      tracks: state.tracks.map((currentTrack) => {
+        if (currentTrack.url === track.url) {
+          return { ...currentTrack, playlist: [...(currentTrack.playlist ?? []), playlistName] };
+        }
+        return currentTrack;
+      }),
+    })),
 }));
 
 export const useTracks = () => useLibraryStore((state) => state.tracks);
@@ -39,3 +57,28 @@ export const useArtists = () =>
       return acc;
     }, [] as Artist[]);
   });
+
+export const usePlaylists = () => {
+  const playlists = useLibraryStore((state) => {
+    return state.tracks.reduce((acc, track) => {
+      track.playlist?.forEach((playlistName) => {
+        const existingPlaylist = acc.find((playlist) => playlist.name === playlistName);
+
+        if (existingPlaylist) {
+          existingPlaylist.tracks.push(track);
+        } else {
+          acc.push({
+            name: playlistName,
+            tracks: [track],
+            artworkPreview: track.artwork ?? unknownArtistImageUri,
+          });
+        }
+      });
+      return acc;
+    }, [] as Playlist[]);
+  });
+
+  const addToPlaylist = useLibraryStore((state) => state.addToPlaylist);
+
+  return { playlists, addToPlaylist };
+};

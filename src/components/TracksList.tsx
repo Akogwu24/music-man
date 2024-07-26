@@ -44,7 +44,7 @@ export default function TracksList({
       await TrackPlayer.play(); //plays the selected track
 
       queueOffset.current = trackIndex;
-      console.log('  queueOffset.current', queueOffset.current);
+
       setActiveQueueId(id as string);
     } else {
       const nextTrackIndex =

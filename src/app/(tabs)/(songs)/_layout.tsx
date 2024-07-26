@@ -2,7 +2,7 @@ import { StackScreenWithSearchBar } from '@/constants/layout';
 import { defaultStyles } from '@/styles';
 import { Stack } from 'expo-router';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 export default function SongsScreensLayout() {
   return (

@@ -4,7 +4,7 @@ import { FontAwesome, FontAwesome6, Ionicons, MaterialCommunityIcons } from '@ex
 import { BlurView } from 'expo-blur';
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 export default function TabsNavigationLayout() {
   return (
@@ -18,6 +18,7 @@ export default function TabsNavigationLayout() {
             backgroundColor: '#000',
             borderTopColor: colors.primary,
           },
+          tabBarHideOnKeyboard: true,
           tabBarBackground: () => (
             <BlurView
               intensity={85}
@@ -72,7 +73,7 @@ export default function TabsNavigationLayout() {
           position: 'absolute',
           left: 8,
           right: 8,
-          bottom: 78,
+          bottom: Platform.OS === 'ios' ? 78 : 50,
         }}
       />
     </>

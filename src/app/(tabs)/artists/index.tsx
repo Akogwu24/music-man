@@ -1,3 +1,4 @@
+import { CustomHeaderForAndroid } from '@/components/CustomHeaderForAndroid';
 import { unknownArtistImageUri } from '@/constants/images';
 import { screenPadding } from '@/constants/tokens';
 import { artistNameFilter } from '@/helpers/filter';
@@ -6,8 +7,8 @@ import { useNavigationSearch } from '@/hooks/useNavigationSearch';
 import { useArtists } from '@/store/library';
 import { defaultStyles, utilsStyles } from '@/styles';
 import { Link } from 'expo-router';
-import React, { useMemo } from 'react';
-import { FlatList, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { FlatList, Platform, StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -18,6 +19,7 @@ const ItemSeparatorComponent = () => {
 export default function ArtistsScreen() {
   const search = useNavigationSearch({ searchBarOptions: { placeholder: 'Search in artists' } });
   const artists = useArtists();
+  const [androidSearchTerm, setAndroidSearchTerm] = useState('');
 
   const filteredArtist = useMemo(() => {
     if (!search) return artists;
@@ -28,6 +30,13 @@ export default function ArtistsScreen() {
   return (
     <View style={defaultStyles.container}>
       <View style={defaultStyles.container}>
+        {Platform.OS === 'android' ? (
+          <CustomHeaderForAndroid
+            title='Artists'
+            value={androidSearchTerm}
+            setValue={setAndroidSearchTerm}
+          />
+        ) : null}
         <ScrollView
           style={{ paddingHorizontal: screenPadding.horizontal }}
           contentInsetAdjustmentBehavior='automatic'
@@ -55,7 +64,7 @@ const RenderArtist = ({ artist }: { artist: Artist }) => {
           <View>
             <FastImage
               source={{
-                uri: unknownArtistImageUri,
+                uri: artist.tracks[0].artwork ?? unknownArtistImageUri,
                 priority: FastImage.priority.normal,
               }}
               style={[styles.artistImage, { opacity: 0.7 }]}

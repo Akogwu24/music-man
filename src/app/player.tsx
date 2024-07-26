@@ -6,6 +6,7 @@ import { PlayerVolumeBar } from '@/components/PlayerVolumeBar';
 import { unknownTrackImageUri } from '@/constants/images';
 import { colors, fontSize, screenPadding } from '@/constants/tokens';
 import { usePlayerBackground } from '@/hooks/usePlayerBackground';
+import { useTrackPlayerFavorite } from '@/hooks/useTrackPlayerFavorite';
 import { defaultStyles, utilsStyles } from '@/styles';
 import { FontAwesome } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -19,10 +20,9 @@ import { useActiveTrack } from 'react-native-track-player';
 export default function PlayerScreen() {
   const activeTrack = useActiveTrack();
   const { top, bottom } = useSafeAreaInsets();
-  const isFavorite = false;
   const { imageColors } = usePlayerBackground(activeTrack?.artwork ?? unknownTrackImageUri);
 
-  const toggleFavorite = () => {};
+  const { isFavorite, toggleFavorite } = useTrackPlayerFavorite();
 
   if (!activeTrack) {
     return (
@@ -35,7 +35,11 @@ export default function PlayerScreen() {
   return (
     <LinearGradient
       style={{ flex: 1 }}
-      colors={imageColors ? [imageColors.background, imageColors.primary] : [colors.background]}
+      colors={
+        imageColors
+          ? [imageColors.background, imageColors.primary]
+          : [colors.background, colors.maximumTrackTintColor]
+      }
     >
       <View style={styles.overlayContainer}>
         <DismissPlayerSymbol />

@@ -1,10 +1,11 @@
 import { colors } from '@/constants/tokens';
 import { useNavigation } from 'expo-router';
 import { useLayoutEffect, useState } from 'react';
+import { Platform } from 'react-native';
 import { SearchBarProps } from 'react-native-screens';
 
 const defaultSearchOptions: SearchBarProps = {
-  tintColor: colors.primary,
+  tintColor: Platform.OS === 'ios' ? colors.primary : 'red',
   hideWhenScrolling: false,
 };
 

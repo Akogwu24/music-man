@@ -3,14 +3,15 @@ import { useSetupTrackPlayer } from '@/hooks/useSetupTrackPlayer';
 import { SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import TrackPlayer from 'react-native-track-player';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { colors } from '@/constants/tokens';
+import TrackPlayer from 'react-native-track-player';
+import { playbackService } from '@/constants/playbackService';
 
 SplashScreen.preventAutoHideAsync();
 
-// TrackPlayer.registerPlaybackService(() => playbackService);
+TrackPlayer.registerPlaybackService(() => playbackService);
 
 export default function RootLayout() {
   const handleTrackPlayerLoaded = useCallback(() => {
@@ -44,6 +45,20 @@ const RootNavigation = () => {
           gestureDirection: 'vertical',
           animationDuration: 400,
           headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name='(modals)/addToPlaylist'
+        options={{
+          presentation: 'modal',
+          headerStyle: {
+            backgroundColor: colors.background,
+          },
+          headerTitle: 'Add to playlist',
+          headerTitleStyle: {
+            color: colors.text,
+          },
         }}
       />
     </Stack>
